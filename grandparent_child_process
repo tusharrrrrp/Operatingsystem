@@ -1,0 +1,42 @@
+#include <stdio.h>      // For printf() and perror()
+#include <unistd.h>     // For fork(), getpid(), getppid()
+#include <sys/wait.h>   // For wait()
+#include <stdlib.h>     // For exit()
+
+int main() {
+    pid_t parent_pid, child_pid;
+
+    // Grandparent process creates parent
+    parent_pid = fork();
+
+    if (parent_pid == -1) {
+        perror("Failed to fork parent");
+        return EXIT_FAILURE;
+    } 
+    else if (parent_pid == 0) {
+        // Parent process
+        // Parent now creates a child
+        child_pid = fork();
+
+        if (child_pid == -1) {
+            perror("Failed to fork child");
+            exit(EXIT_FAILURE);
+        } 
+        else if (child_pid == 0) {
+            // Child process
+            printf("Child: PID=%d, Parent PID=%d\n", getpid(), getppid());
+            exit(EXIT_SUCCESS);
+        }
+
+        // Parent needs to wait for the child to complete
+        wait(NULL);
+        printf("Parent: PID=%d, Child PID=%d, Grandparent PID=%d\n", getpid(), child_pid, getppid());
+        exit(EXIT_SUCCESS);
+    }
+
+    // Grandparent needs to wait for the parent to complete
+    wait(NULL);
+    printf("Grandparent: PID=%d, Parent PID=%d\n", getpid(), parent_pid);
+
+    return EXIT_SUCCESS;
+}
