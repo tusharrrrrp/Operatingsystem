@@ -40,3 +40,9 @@ int main() {
 
     return EXIT_SUCCESS;
 }
+
+
+
+gcc -o fork_hierarchy fork_hierarchy.c
+./fork_hierarchy
+
