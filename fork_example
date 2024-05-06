@@ -1,0 +1,29 @@
+#include <stdio.h>      // For printf() and perror()
+#include <unistd.h>     // For fork()
+#include <sys/types.h>  // For pid_t
+#include <stdlib.h>     // For exit()
+
+int main() {
+    pid_t pid;  // Process ID
+
+    // Creating a child process
+    pid = fork();
+
+    if (pid == -1) {
+        // Error: The fork() failed
+        perror("fork failed");
+        exit(EXIT_FAILURE);
+    }
+    else if (pid == 0) {
+        // This block is executed only by the child process
+        printf("I am the child process: PID=%d, Parent PID=%d\n", getpid(), getppid());
+    }
+    else {
+        // This block is executed only by the parent process
+        printf("I am the parent process: PID=%d, Child PID=%d\n", getpid(), pid);
+    }
+
+    return EXIT_SUCCESS;
+}
+
+}
