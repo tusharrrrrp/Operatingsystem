@@ -1,0 +1,15 @@
+#!/bin/bash
+
+# Prompt the user to enter their name
+echo "Enter your name:"
+
+# Read user input into a variable
+read name
+
+# Print a greeting message with the user's name
+echo "Hello, $name! Welcome to the shell script."
+
+# Perform additional operations
+# For example, you can list files in the current directory
+echo "Listing files in the current directory:"
+ls
